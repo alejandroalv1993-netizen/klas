@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env*.local
+dev.log
+dev.err.log
+next.log
+next.err.log
+npm-debug.log*
+
+# Local Netlify folder
+.netlify
