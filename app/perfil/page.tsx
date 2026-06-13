@@ -3,6 +3,7 @@ import { Download, FileText, Star } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { requireUser } from "@/lib/auth";
 import { formatNumber } from "@/lib/utils";
+import { AccountPrivacyControls } from "@/components/account-privacy-controls";
 
 export const dynamic = "force-dynamic";
 
@@ -83,6 +84,7 @@ export default async function ProfilePage() {
             </div>
           )}
         </section>
+        <AccountPrivacyControls />
       </main>
     </>
   );

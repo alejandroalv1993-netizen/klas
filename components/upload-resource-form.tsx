@@ -67,6 +67,10 @@ export function UploadResourceForm({ categories, universities, subjects }: {
           </div>
         )}
       </label>
+      <label className="flex items-start gap-3 border-t border-black/8 pt-6 text-sm leading-6 text-black/68">
+        <input required type="checkbox" name="rightsConfirmed" className="mt-1 size-4 accent-carbon" />
+        <span>Confirmo que tengo derecho a compartir este documento y que no contiene datos personales de terceros, contenido ilícito ni material protegido sin autorización.</span>
+      </label>
       {error ? <p role="alert" className="text-sm font-black text-red-700">{error}</p> : null}
       <div className="flex justify-end border-t border-black/8 pt-6">
         <button disabled={pending} className="inline-flex h-12 items-center gap-3 rounded-klas bg-carbon px-5 text-sm font-black text-white disabled:opacity-50">

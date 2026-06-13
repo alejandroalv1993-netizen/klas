@@ -21,11 +21,13 @@ export async function POST(request: Request) {
     const category = field(formData, "category");
     const university = field(formData, "university");
     const subject = field(formData, "subject");
+    const rightsConfirmed = formData.get("rightsConfirmed") === "on";
     const file = formData.get("file");
 
     if (title.length < 5 || title.length > 140) return NextResponse.json({ error: "El título debe tener entre 5 y 140 caracteres." }, { status: 400 });
     if (description.length < 20 || description.length > 2000) return NextResponse.json({ error: "La descripción debe tener entre 20 y 2000 caracteres." }, { status: 400 });
     if (!category || !university || !subject) return NextResponse.json({ error: "Completa categoría, universidad y asignatura." }, { status: 400 });
+    if (!rightsConfirmed) return NextResponse.json({ error: "Debes confirmar que puedes compartir el documento y que no contiene datos personales de terceros sin autorización." }, { status: 400 });
     if (!(file instanceof File)) return NextResponse.json({ error: "Selecciona un archivo." }, { status: 400 });
 
     const validated = await validateResourceFile(file);

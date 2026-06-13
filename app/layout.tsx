@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LenisProvider } from "@/components/lenis-provider";
+import { CookieNotice } from "@/components/cookie-notice";
+import { LegalFooter } from "@/components/legal-footer";
 
 export const metadata: Metadata = {
   title: "KLAS - Apuntes gratuitos, para siempre",
@@ -15,6 +17,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="antialiased">
         <LenisProvider />
         {children}
+        <LegalFooter />
+        <CookieNotice />
         <div className="noise" />
       </body>
     </html>

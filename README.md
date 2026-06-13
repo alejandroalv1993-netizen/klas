@@ -1,16 +1,14 @@
-# KLAS MVP
+# KLAS
 
-KLAS es una plataforma educativa para explorar, descargar y compartir recursos gratuitos sin publicidad dentro de los documentos.
+Plataforma educativa para explorar, descargar y compartir recursos gratuitos sin publicidad añadida dentro de los documentos.
 
 ## Stack
 
 - Next.js 15 App Router
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Lenis smooth scroll
+- TypeScript y Tailwind CSS
 - Supabase Auth, Database y Storage
-- Vercel-ready
+- Framer Motion y Lenis
+- Netlify
 
 ## Desarrollo local
 
@@ -19,44 +17,41 @@ npm install
 npm run dev
 ```
 
-Abre `http://localhost:3000`.
-
 ## Variables de entorno
 
-Copia `.env.example` a `.env.local` y completa:
-
-```bash
+```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+LEGAL_RESPONSIBLE_NAME=
+LEGAL_TAX_ID=
+LEGAL_ADDRESS=
+LEGAL_CONTACT_EMAIL=
+LEGAL_DPO_EMAIL=
+LEGAL_LAST_UPDATED=2026-06-13
 ```
 
 ## Supabase
 
-1. Crea un proyecto en Supabase.
-2. Ejecuta `supabase/schema.sql` en el SQL editor.
-3. Ejecuta `supabase/seed.sql` para cargar categorías, universidades y asignaturas.
-4. En Authentication > URL Configuration añade `http://localhost:3000/auth/callback` como URL de redirección local.
-5. El script crea el bucket privado `resources`, su límite de 25 MB y las políticas RLS necesarias.
+1. Ejecuta `supabase/schema.sql` para una instalación nueva.
+2. Ejecuta `supabase/seed.sql` para cargar taxonomías iniciales.
+3. En proyectos ya creados, ejecuta una vez `supabase/rgpd-migration.sql`.
+4. En Authentication > URL Configuration configura `https://klas-apuntes.netlify.app` como Site URL.
+5. Añade `http://localhost:3000/auth/callback` y `https://klas-apuntes.netlify.app/auth/callback` en Redirect URLs.
 
-El registro requiere confirmación por email. Las subidas solo aceptan PDF y DOCX, validan extensión, MIME y firma binaria, y se almacenan bajo la carpeta privada del usuario. Las descargas publicadas usan enlaces firmados de 60 segundos.
+## Privacidad y seguridad
 
-## Rutas
+- Sesiones SSR mediante cookies técnicas de Supabase.
+- Row Level Security por propietario en tablas y Storage.
+- Bucket privado, validación PDF/DOCX y descargas firmadas.
+- Registro versionado de aceptación legal.
+- Exportación de datos y eliminación autónoma de cuenta.
+- Aviso de cookies técnicas y documentos legales accesibles globalmente.
+- Cabeceras defensivas para framing, MIME, permisos y referrer.
 
-- `/` Landing editorial KLAS
-- `/dashboard` Dashboard de usuario
-- `/explorar` Búsqueda y filtros
-- `/recursos/[slug]` Detalle del recurso
-- `/auth` Registro e inicio de sesión
-- `/subir` Formulario de subida protegido
-- `/perfil` Perfil de usuario
-- `/favoritos` Recursos guardados
+Antes de abrir el registro al público:
 
-## Seguridad
-
-- Las sesiones se mantienen en cookies SSR y se refrescan desde middleware.
-- `/subir` y `/perfil` requieren un usuario autenticado.
-- La base de datos y Storage aplican Row Level Security por propietario.
-- Nunca expongas `SUPABASE_SERVICE_ROLE_KEY` al navegador. El flujo actual no necesita esa clave.
-- Configura límites de Auth, protección anti-bot y SMTP propio en Supabase antes de producción.
+- Completa las variables `LEGAL_*` con los datos reales del responsable.
+- Formaliza los acuerdos de encargado del tratamiento con Supabase y Netlify.
+- Configura SMTP, protección anti-bot y límites de Auth en Supabase.
+- Mantén un procedimiento interno para derechos, brechas, conservación y retirada de contenidos.

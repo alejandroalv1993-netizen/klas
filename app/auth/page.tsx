@@ -1,8 +1,8 @@
 import { AuthForm } from "@/app/auth/auth-form";
 import { Logo } from "@/components/logo";
 
-export default async function AuthPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
-  const { next } = await searchParams;
+export default async function AuthPage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string }> }) {
+  const { next, error } = await searchParams;
 
   return (
     <main className="grid min-h-screen bg-white lg:grid-cols-[0.9fr_1.1fr]">
@@ -15,8 +15,9 @@ export default async function AuthPage({ searchParams }: { searchParams: Promise
             Guarda recursos, comparte documentos y construye tu reputación dentro de la comunidad.
           </p>
           <div className="mt-10"><AuthForm next={next} /></div>
+          {error === "callback" ? <p role="alert" className="mt-5 text-sm font-bold text-red-700">No se pudo completar la confirmación. Comprueba que esta URL está autorizada en Supabase e inténtalo de nuevo.</p> : null}
         </div>
-        <p className="text-xs font-medium text-black/42">Al continuar aceptas los términos y la política de privacidad.</p>
+        <p className="text-xs font-medium text-black/52">La aceptación legal solo se solicita al crear una cuenta.</p>
       </section>
       <section className="relative hidden overflow-hidden bg-carbon lg:block">
         <div className="absolute inset-0 bg-[url('/assets/section-community.png')] bg-cover bg-center opacity-72" />

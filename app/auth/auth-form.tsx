@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { ArrowRight, LockKeyhole, Mail, UserRound } from "lucide-react";
 import { signIn, signUp, type AuthState } from "@/app/auth/actions";
+import Link from "next/link";
 
 const initialState: AuthState = {};
 
@@ -44,6 +45,14 @@ export function AuthForm({ next = "/dashboard" }: { next?: string }) {
           autoComplete={mode === "login" ? "current-password" : "new-password"}
           hint={mode === "register" ? "Mínimo 10 caracteres" : undefined}
         />
+        {mode === "register" ? (
+          <label className="flex items-start gap-3 text-sm leading-6 text-black/68">
+            <input required type="checkbox" name="legalConsent" className="mt-1 size-4 accent-carbon" />
+            <span>
+              He leído y acepto los <Link href="/legal/terminos" target="_blank" className="font-bold underline underline-offset-2">términos de uso</Link> y la <Link href="/legal/privacidad" target="_blank" className="font-bold underline underline-offset-2">política de privacidad</Link>.
+            </span>
+          </label>
+        ) : null}
         {state.error ? <p role="alert" className="text-sm font-bold text-red-700">{state.error}</p> : null}
         {state.success ? <p className="text-sm font-bold text-green-700">{state.success}</p> : null}
         <button
