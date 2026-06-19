@@ -10,6 +10,14 @@ export type ValidatedFile = {
   bytes: Uint8Array;
 };
 
+const RISK_PATTERNS = [
+  { flag: "possible_isbn", pattern: /\b(?:isbn(?:-1[03])?:?\s*)?(?:97[89][-\s]?)?\d[-\s]?\d{2,5}[-\s]?\d{2,7}[-\s]?\d{1,7}[-\s]?[\dx]\b/i },
+  { flag: "copyright_notice", pattern: /copyright|all rights reserved|todos los derechos reservados|derechos reservados|editorial|publisher/i },
+  { flag: "exam_or_solutionary", pattern: /examen oficial|solucionario|answer key|exam solutions|prohibida su reproducci[oó]n/i },
+  { flag: "possible_personal_data", pattern: /\b\d{8}[a-z]\b|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i },
+  { flag: "official_material", pattern: /material oficial|campus virtual|moodle|blackboard|aula virtual|academia|profesorado/i }
+];
+
 export async function validateResourceFile(file: File): Promise<ValidatedFile> {
   if (!file.size || file.size > MAX_RESOURCE_SIZE) {
     throw new Error("El archivo debe pesar menos de 25 MB.");
@@ -34,6 +42,29 @@ export async function validateResourceFile(file: File): Promise<ValidatedFile> {
   if (!zipSignature || !hasDocxStructure) throw new Error("El archivo no contiene un DOCX válido.");
   if (file.type && file.type !== DOCX_MIME) throw new Error("El tipo MIME del DOCX no es válido.");
   return { extension, contentType: DOCX_MIME, bytes };
+}
+
+export function scanResourceSignals(params: {
+  title: string;
+  description: string;
+  fileName: string;
+  bytes: Uint8Array;
+}) {
+  const rawSample = new TextDecoder("latin1", { fatal: false }).decode(params.bytes.slice(0, 350_000));
+  const searchable = `${params.title}\n${params.description}\n${params.fileName}\n${rawSample}`;
+  const flags = new Set<string>();
+
+  for (const { flag, pattern } of RISK_PATTERNS) {
+    if (pattern.test(searchable)) flags.add(flag);
+  }
+
+  if (/scan|scanned|fotocopia|photocopy/i.test(searchable)) flags.add("possible_scan");
+  if (params.bytes.length > 12 * 1024 * 1024) flags.add("large_file_review");
+
+  return {
+    flags: Array.from(flags),
+    requiresManualReview: true
+  };
 }
 
 export function safeFileName(fileName: string) {

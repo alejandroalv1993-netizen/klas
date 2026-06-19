@@ -18,8 +18,16 @@ type UserResource = {
   created_at: string;
 };
 
-export default async function ProfilePage() {
+const statusLabels: Record<string, string> = {
+  draft: "Borrador",
+  pending_review: "En revision",
+  published: "Publicado",
+  rejected: "Rechazado"
+};
+
+export default async function ProfilePage({ searchParams }: { searchParams?: Promise<{ uploaded?: string }> }) {
   const { user, supabase } = await requireUser();
+  const params = searchParams ? await searchParams : {};
   const [{ data: profile }, { data }] = await Promise.all([
     supabase.from("profiles").select("full_name, created_at").eq("id", user.id).single(),
     supabase
@@ -59,6 +67,12 @@ export default async function ProfilePage() {
           </div>
         </section>
 
+        {params.uploaded === "pending" ? (
+          <div className="mt-8 rounded-klas border border-indigo/20 bg-indigo/5 p-4 text-sm font-bold text-carbon">
+            Recurso recibido. Lo revisaremos antes de publicarlo para reducir riesgos de derechos de autor, privacidad y abuso.
+          </div>
+        ) : null}
+
         <section className="mt-10">
           <div className="mb-5 flex items-center justify-between gap-4">
             <h2 className="text-2xl font-black">Tus recursos</h2>
@@ -66,20 +80,11 @@ export default async function ProfilePage() {
           </div>
           {resources.length ? (
             <div className="divide-y divide-black/8 border-y border-black/8">
-              {resources.map((resource) => (
-                <Link key={resource.id} href={`/recursos/${resource.slug}`} className="grid gap-3 py-5 transition-opacity hover:opacity-60 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-8">
-                  <div>
-                    <p className="font-black">{resource.title}</p>
-                    <p className="mt-1 text-sm text-black/48">{resource.file_type.toUpperCase()} · {resource.status}</p>
-                  </div>
-                  <p className="text-sm font-bold text-black/55">{formatNumber(resource.downloads_count)} descargas</p>
-                  <p className="text-sm font-bold text-black/55">{Number(resource.rating_average).toFixed(1)}/5</p>
-                </Link>
-              ))}
+              {resources.map((resource) => <ResourceRow key={resource.id} resource={resource} />)}
             </div>
           ) : (
             <div className="border-y border-black/8 py-16 text-center">
-              <p className="text-lg font-black">Aún no has publicado recursos.</p>
+              <p className="text-lg font-black">Aun no has publicado recursos.</p>
               <Link href="/subir" className="mt-3 inline-block text-sm font-black text-indigo">Publicar el primero</Link>
             </div>
           )}
@@ -88,6 +93,25 @@ export default async function ProfilePage() {
       </main>
     </>
   );
+}
+
+function ResourceRow({ resource }: { resource: UserResource }) {
+  const content = (
+    <>
+      <div>
+        <p className="font-black">{resource.title}</p>
+        <p className="mt-1 text-sm text-black/48">{resource.file_type.toUpperCase()} · {statusLabels[resource.status] ?? resource.status}</p>
+      </div>
+      <p className="text-sm font-bold text-black/55">{formatNumber(resource.downloads_count)} descargas</p>
+      <p className="text-sm font-bold text-black/55">{Number(resource.rating_average).toFixed(1)}/5</p>
+    </>
+  );
+
+  if (resource.status !== "published") {
+    return <div className="grid gap-3 py-5 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-8">{content}</div>;
+  }
+
+  return <Link href={`/recursos/${resource.slug}`} className="grid gap-3 py-5 transition-opacity hover:opacity-60 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-8">{content}</Link>;
 }
 
 function Stat({ icon: Icon, value, label }: { icon: typeof FileText; value: string; label: string }) {

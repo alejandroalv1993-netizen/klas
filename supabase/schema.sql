@@ -54,7 +54,17 @@ create table if not exists public.resources (
   file_type text not null check (file_type in ('pdf', 'docx')),
   file_size bigint not null check (file_size > 0 and file_size <= 26214400),
   cover_image_url text,
-  status text not null default 'published' check (status in ('draft', 'published', 'rejected')),
+  content_hash text,
+  ownership_type text check (ownership_type is null or ownership_type in ('own_work', 'licensed', 'public_domain', 'permission')),
+  source_title text,
+  source_url text,
+  license_name text,
+  rights_confirmed_at timestamptz,
+  moderation_flags text[] not null default '{}',
+  moderation_notes text,
+  reviewed_at timestamptz,
+  reviewed_by uuid references public.profiles(id) on delete set null,
+  status text not null default 'pending_review' check (status in ('draft', 'pending_review', 'published', 'rejected')),
   downloads_count integer not null default 0 check (downloads_count >= 0),
   rating_average numeric(2, 1) not null default 0 check (rating_average between 0 and 5),
   created_at timestamptz not null default now(),
@@ -68,12 +78,54 @@ alter table public.resources add column if not exists storage_path text;
 alter table public.resources add column if not exists file_name text;
 alter table public.resources add column if not exists file_type text;
 alter table public.resources add column if not exists file_size bigint;
-alter table public.resources add column if not exists status text not null default 'published';
+alter table public.resources add column if not exists content_hash text;
+alter table public.resources add column if not exists ownership_type text;
+alter table public.resources add column if not exists source_title text;
+alter table public.resources add column if not exists source_url text;
+alter table public.resources add column if not exists license_name text;
+alter table public.resources add column if not exists rights_confirmed_at timestamptz;
+alter table public.resources add column if not exists moderation_flags text[] not null default '{}';
+alter table public.resources add column if not exists moderation_notes text;
+alter table public.resources add column if not exists reviewed_at timestamptz;
+alter table public.resources add column if not exists reviewed_by uuid references public.profiles(id) on delete set null;
+alter table public.resources add column if not exists status text not null default 'pending_review';
 alter table public.resources add column if not exists updated_at timestamptz not null default now();
 
 create index if not exists resources_author_id_idx on public.resources(author_id);
 create index if not exists resources_status_created_at_idx on public.resources(status, created_at desc);
 create index if not exists resources_slug_idx on public.resources(slug);
+create index if not exists resources_content_hash_idx on public.resources(content_hash);
+create index if not exists resources_pending_review_idx on public.resources(created_at desc) where status = 'pending_review';
+
+create table if not exists public.blocked_file_hashes (
+  hash text primary key,
+  reason text not null default 'rights_or_safety',
+  source_resource_id uuid references public.resources(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.resource_reports (
+  id uuid primary key default gen_random_uuid(),
+  resource_id uuid not null references public.resources(id) on delete cascade,
+  reporter_id uuid references public.profiles(id) on delete set null,
+  reporter_email text,
+  reason text not null check (reason in ('copyright', 'privacy', 'illegal', 'spam', 'quality', 'other')),
+  details text not null check (char_length(details) between 20 and 2000),
+  status text not null default 'open' check (status in ('open', 'reviewing', 'resolved', 'rejected')),
+  resolution_notes text,
+  created_at timestamptz not null default now(),
+  resolved_at timestamptz
+);
+
+create or replace function public.is_file_hash_blocked(candidate_hash text)
+returns boolean
+language sql
+security definer
+set search_path = public
+as 'select exists (select 1 from public.blocked_file_hashes where hash = candidate_hash);';
+
+revoke all on function public.is_file_hash_blocked(text) from public;
+grant execute on function public.is_file_hash_blocked(text) to authenticated;
 
 create table if not exists public.ratings (
   id uuid primary key default gen_random_uuid(),
@@ -131,6 +183,8 @@ alter table public.resources enable row level security;
 alter table public.ratings enable row level security;
 alter table public.downloads enable row level security;
 alter table public.favorites enable row level security;
+alter table public.blocked_file_hashes enable row level security;
+alter table public.resource_reports enable row level security;
 
 drop policy if exists "Public profiles are readable" on public.profiles;
 drop policy if exists "Users read own profile" on public.profiles;
@@ -149,7 +203,7 @@ drop policy if exists "Resources are readable" on public.resources;
 drop policy if exists "Published resources are readable" on public.resources;
 create policy "Published resources are readable" on public.resources for select using (status = 'published' or auth.uid() = author_id);
 drop policy if exists "Authenticated users create resources" on public.resources;
-create policy "Authenticated users create resources" on public.resources for insert to authenticated with check (auth.uid() = author_id);
+create policy "Authenticated users create resources" on public.resources for insert to authenticated with check (auth.uid() = author_id and status in ('draft', 'pending_review'));
 drop policy if exists "Authors update own resources" on public.resources;
 create policy "Authors update own resources" on public.resources for update to authenticated using (auth.uid() = author_id) with check (auth.uid() = author_id);
 drop policy if exists "Authors delete own resources" on public.resources;
@@ -173,6 +227,15 @@ drop policy if exists "Users create own favorites" on public.favorites;
 create policy "Users create own favorites" on public.favorites for insert to authenticated with check (auth.uid() = user_id);
 drop policy if exists "Users delete own favorites" on public.favorites;
 create policy "Users delete own favorites" on public.favorites for delete to authenticated using (auth.uid() = user_id);
+
+drop policy if exists "No public read blocked hashes" on public.blocked_file_hashes;
+create policy "No public read blocked hashes" on public.blocked_file_hashes for select using (false);
+
+drop policy if exists "Anyone can report resources" on public.resource_reports;
+create policy "Anyone can report resources" on public.resource_reports for insert with check (true);
+
+drop policy if exists "Reporters read own reports" on public.resource_reports;
+create policy "Reporters read own reports" on public.resource_reports for select to authenticated using (auth.uid() = reporter_id);
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (

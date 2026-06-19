@@ -18,7 +18,7 @@ const documents = {
       ["Titular del servicio", `Responsable: ${legalConfig.responsibleName}. NIF/CIF: ${legalConfig.taxId}. Domicilio: ${legalConfig.address}. Contacto: ${legalConfig.contactEmail}.`],
       ["Objeto", "KLAS permite consultar, publicar y descargar recursos educativos aportados por su comunidad. El acceso a determinadas funciones requiere una cuenta."],
       ["Propiedad intelectual", "La marca, el diseño y el software de KLAS están protegidos por la normativa aplicable. Los documentos pertenecen a sus autores o titulares y se ofrecen bajo las condiciones declaradas al publicarlos."],
-      ["Responsabilidad", "KLAS aplica controles técnicos y puede retirar contenidos que infrinjan derechos, la ley o estos términos. No garantiza la exactitud académica de materiales aportados por terceros."],
+      ["Responsabilidad", "KLAS aplica controles técnicos, revisión previa y canales de reporte para reducir riesgos, y puede retirar contenidos que infrinjan derechos, la ley o estos términos. No garantiza la exactitud académica de materiales aportados por terceros."],
       ["Normativa aplicable", "Este servicio se rige por la legislación española. Cuando resulte aplicable, cualquier controversia se someterá a los juzgados determinados por la normativa de consumidores y usuarios."]
     ]
   },
@@ -27,13 +27,13 @@ const documents = {
     intro: "Cómo tratamos los datos personales de usuarios y visitantes.",
     sections: [
       ["Responsable", `${legalConfig.responsibleName}, con domicilio en ${legalConfig.address}. Contacto para privacidad: ${legalConfig.contactEmail}. Delegado de protección de datos: ${legalConfig.dpoEmail}.`],
-      ["Datos tratados", "Datos de cuenta (nombre, email y registros de aceptación), información de los recursos publicados, favoritos y valoraciones, registros técnicos de seguridad y comunicaciones que envíes al responsable."],
-      ["Finalidades y bases jurídicas", "Gestionamos la cuenta, las publicaciones y las descargas para ejecutar los términos del servicio. Protegemos la plataforma frente a fraude y abuso por interés legítimo. Conservamos la información exigida para cumplir obligaciones legales. Las finalidades opcionales futuras requerirán consentimiento separado."],
+      ["Datos tratados", "Datos de cuenta, email, registros de aceptación legal, información de recursos publicados, declaración de origen legal, señales de moderación, favoritos, valoraciones, reportes de contenido, registros técnicos de seguridad y comunicaciones que envíes al responsable."],
+      ["Finalidades y bases jurídicas", "Gestionamos la cuenta, las publicaciones, la revisión de recursos y las descargas para ejecutar los términos del servicio. Protegemos la plataforma frente a fraude, abuso, infracciones y riesgos de seguridad por interés legítimo. Conservamos la información exigida para cumplir obligaciones legales."],
       ["Destinatarios y encargados", "Supabase presta autenticación, base de datos y almacenamiento. Netlify presta alojamiento y distribución web. También podrán comunicarse datos a autoridades cuando exista obligación legal. Deben formalizarse los acuerdos de encargo y revisarse las regiones y garantías de transferencia contratadas con cada proveedor."],
-      ["Conservación", "Los datos de cuenta se conservan mientras mantengas la cuenta y durante los plazos necesarios para atender responsabilidades legales. Al eliminarla se borran la cuenta, sus relaciones y los archivos publicados, salvo copias de seguridad temporales o datos que deban conservarse por obligación legal."],
+      ["Conservación", "Los datos de cuenta se conservan mientras mantengas la cuenta y durante los plazos necesarios para atender responsabilidades legales. Al eliminarla se borran la cuenta, sus relaciones y los archivos publicados, salvo copias de seguridad temporales o datos que deban conservarse por obligación legal. Los reportes y decisiones de moderación se conservarán solo durante el plazo necesario para gestionar reclamaciones y responsabilidades."],
       ["Derechos", "Puedes acceder y exportar tus datos desde el perfil, rectificarlos mediante solicitud, eliminar la cuenta y ejercer oposición, limitación o portabilidad escribiendo al contacto de privacidad. También puedes reclamar ante la Agencia Española de Protección de Datos."],
       ["Menores", "KLAS no está dirigido a menores de 14 años. Las personas menores de 18 años deben contar con autorización suficiente para publicar contenidos y aceptar las condiciones aplicables."],
-      ["Seguridad", "Aplicamos sesiones seguras, Row Level Security, almacenamiento privado, enlaces temporales de descarga, validación de archivos y limitación de acceso por usuario. Ningún sistema puede garantizar seguridad absoluta."]
+      ["Seguridad", "Aplicamos sesiones seguras, Row Level Security, almacenamiento privado, enlaces temporales de descarga, validación de archivos, revisión previa, bloqueo por hash y limitación de acceso por usuario. Ningún sistema puede garantizar seguridad absoluta."]
     ]
   },
   cookies: {
@@ -52,9 +52,10 @@ const documents = {
     intro: "Reglas para utilizar KLAS y compartir recursos educativos.",
     sections: [
       ["Cuenta", "Debes facilitar información correcta, proteger tus credenciales y comunicar cualquier uso no autorizado. No se permite suplantar identidades ni crear cuentas para eludir medidas de seguridad."],
-      ["Publicación de recursos", "Solo puedes subir documentos que hayas creado, que sean de dominio público o para los que dispongas de autorización suficiente. No publiques datos personales de terceros, exámenes obtenidos ilícitamente, malware ni contenidos que vulneren derechos."],
-      ["Licencia de alojamiento", "Al publicar concedes a KLAS una licencia no exclusiva y gratuita, limitada a almacenar, reproducir técnicamente y distribuir el recurso dentro del servicio hasta que lo retires o elimines la cuenta."],
-      ["Moderación", "KLAS puede bloquear o retirar recursos y suspender cuentas ante indicios razonables de infracción, riesgo de seguridad o incumplimiento. El usuario podrá contactar con el responsable para solicitar revisión."],
+      ["Publicación de recursos", "Solo puedes subir documentos que hayas creado, que sean de dominio público, que tengan licencia reutilizable o para los que dispongas de autorización suficiente. Debes declarar el origen legal antes de subirlos. No publiques datos personales de terceros, exámenes obtenidos ilícitamente, malware ni contenidos que vulneren derechos."],
+      ["Licencia de alojamiento", "Al publicar concedes a KLAS una licencia no exclusiva y gratuita, limitada a almacenar, reproducir técnicamente, revisar y distribuir el recurso dentro del servicio hasta que lo retires, se bloquee o elimines la cuenta."],
+      ["Moderación", "Las subidas pueden quedar pendientes de revisión antes de publicarse. KLAS puede usar señales técnicas, reportes de terceros y huellas de archivos bloqueados para revisar, bloquear o retirar recursos ante indicios razonables de infracción, riesgo de seguridad o incumplimiento. El usuario podrá contactar con el responsable para solicitar revisión."],
+      ["Reportes", "Cualquier persona puede reportar un recurso por derechos de autor, privacidad, contenido ilícito, spam u otros motivos. El reporte se evaluará de forma proporcionada y podrá implicar retirada temporal o definitiva del contenido."],
       ["Disponibilidad", "El servicio se ofrece en su estado actual. Pueden existir interrupciones por mantenimiento, incidencias de proveedores o cambios necesarios para proteger la plataforma."],
       ["Cambios", "Los cambios relevantes se comunicarán antes de aplicarse cuando afecten a usuarios registrados. La versión aceptada se registra al crear la cuenta."],
       ["Contacto", `Para incidencias legales, retirada de contenidos o consultas sobre estos términos: ${legalConfig.contactEmail}.`]

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Calendar, Download, FileText, Heart, Share2, Star, UserRound } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { ResourceReportForm } from "@/components/resource-report-form";
 import { KlasButton } from "@/components/ui/button";
 import { resources as mockResources, type Resource } from "@/data/mock";
 import { createClient } from "@/lib/supabase/server";
@@ -70,6 +71,7 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
                 <p className="mb-3 text-sm font-bold opacity-75">{subject}</p>
                 <h1 className="editorial-heading text-balance text-5xl leading-none sm:text-7xl">{title}</h1>
               </div>
+              {stored ? <ResourceReportForm resourceId={stored.id} /> : null}
             </div>
             <p className="text-xl leading-9 text-black/68">{description}</p>
             <h2 className="mt-10 text-2xl font-black">Información del recurso</h2>

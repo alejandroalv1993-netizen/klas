@@ -8,7 +8,7 @@ export async function GET() {
 
   const [profile, resources, favorites, ratings, downloads] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
-    supabase.from("resources").select("id,title,slug,description,category_name,university_name,subject_name,file_name,file_type,file_size,status,downloads_count,rating_average,created_at,updated_at").eq("author_id", user.id),
+    supabase.from("resources").select("id,title,slug,description,category_name,university_name,subject_name,file_name,file_type,file_size,status,ownership_type,source_title,source_url,license_name,rights_confirmed_at,moderation_flags,downloads_count,rating_average,created_at,updated_at").eq("author_id", user.id),
     supabase.from("favorites").select("resource_id,created_at").eq("user_id", user.id),
     supabase.from("ratings").select("resource_id,value,created_at").eq("user_id", user.id),
     supabase.from("downloads").select("resource_id,created_at").eq("user_id", user.id)
