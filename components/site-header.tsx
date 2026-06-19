@@ -4,6 +4,7 @@ import { Logo } from "@/components/logo";
 import { KlasButton } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
+import { isConfiguredAdmin } from "@/lib/admin";
 
 const links = [
   ["Explorar", "/explorar"],
@@ -15,10 +16,12 @@ const links = [
 
 export async function SiteHeader() {
   let userEmail: string | undefined;
+  let isAdmin = false;
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     userEmail = user?.email;
+    isAdmin = isConfiguredAdmin(userEmail);
   } catch {}
 
   return (
@@ -36,6 +39,7 @@ export async function SiteHeader() {
         <div className="flex items-center gap-3">
           {userEmail ? (
             <>
+              {isAdmin ? <Link href="/owner/moderacion" className="hidden text-sm font-black text-indigo sm:block">Moderacion</Link> : null}
               <Link href="/perfil" className="hidden max-w-40 truncate text-sm font-black text-black/74 sm:block">{userEmail}</Link>
               <form action={signOut}><button className="text-sm font-black text-black/52 hover:text-black">Salir</button></form>
             </>

@@ -58,6 +58,7 @@ La version actual solo permite cookies tecnicas. No incorporar analitica, pixele
 - Exigir confirmacion de derechos antes de cada subida.
 - Solicitar origen legal del documento: obra propia, licencia reutilizable, dominio publico o permiso del titular.
 - Mantener las subidas en `pending_review` hasta completar una revision proporcionada al riesgo.
+- Limitar el acceso a `/owner/moderacion` a emails incluidos en `ADMIN_EMAILS` y en `public.moderator_emails`.
 - Revisar las senales automaticas `moderation_flags` como apoyo, no como decision juridica automatica.
 - Usar `blocked_file_hashes` para impedir re-subidas de archivos retirados por derechos, privacidad o seguridad.
 - Facilitar un canal de retirada por propiedad intelectual, privacidad o contenido ilicito.
