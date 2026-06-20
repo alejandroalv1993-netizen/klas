@@ -1,0 +1,46 @@
+[
+  {
+    "file": "output/pdf/klas-marketing-digital-desde-cero.pdf",
+    "title": "Marketing digital desde cero",
+    "description": "Guia introductoria original sobre estrategia, embudo, canales digitales, metricas y plan de 30 dias para estudiar marketing digital.",
+    "category": "Marketing",
+    "university": "Universidad de Malaga",
+    "subject": "Fundamentos de Marketing",
+    "ownershipType": "own_work",
+    "sourceTitle": "Contenido original KLAS",
+    "licenseName": "Uso educativo en KLAS beta"
+  },
+  {
+    "file": "output/pdf/klas-derecho-constitucional-esquema-base.pdf",
+    "title": "Derecho constitucional: esquema base",
+    "description": "Esquema introductorio original sobre Constitucion, Estado social y democratico de Derecho, derechos fundamentales, poderes del Estado y control constitucional.",
+    "category": "Derecho",
+    "university": "Universidad de Vigo",
+    "subject": "Derecho Constitucional",
+    "ownershipType": "own_work",
+    "sourceTitle": "Contenido original KLAS",
+    "licenseName": "Uso educativo en KLAS beta"
+  },
+  {
+    "file": "output/pdf/klas-python-fundamentos-practicos.pdf",
+    "title": "Python: fundamentos practicos",
+    "description": "Apuntes originales de introduccion a Python con variables, control de flujo, funciones, colecciones, errores y ejercicios breves.",
+    "category": "Informatica",
+    "university": "Universidad Politecnica de Madrid",
+    "subject": "Programacion",
+    "ownershipType": "own_work",
+    "sourceTitle": "Contenido original KLAS",
+    "licenseName": "Uso educativo en KLAS beta"
+  },
+  {
+    "file": "output/pdf/klas-tecnicas-estudio-universidad.pdf",
+    "title": "Tecnicas de estudio para universidad",
+    "description": "Guia original con sistema de estudio semanal, lectura activa, recuperacion espaciada, mapas de conceptos y preparacion de examenes.",
+    "category": "Universidad",
+    "university": "Universidad Complutense de Madrid",
+    "subject": "Metodologia de estudio",
+    "ownershipType": "own_work",
+    "sourceTitle": "Contenido original KLAS",
+    "licenseName": "Uso educativo en KLAS beta"
+  }
+]

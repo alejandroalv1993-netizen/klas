@@ -17,7 +17,7 @@ Lista operativa para dejar KLAS lista para beta publica.
 
 ## Recursos Reales
 
-- Crear PDFs/DOCX reales de muestra para beta.
+- Crear PDFs/DOCX reales de muestra para beta. Hecho: primer pack en `output/pdf/`.
 - Subirlos desde el flujo real de `/subir`.
 - Aprobarlos desde `/owner/moderacion`.
 - Crear rutas publicas funcionales para cada recurso real.
