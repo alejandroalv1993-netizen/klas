@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowUpRight, CheckCircle2, ExternalLink, FileText, Flag, Lock, XCircle } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, CheckCircle2, ExternalLink, FileText, Flag, Lock } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { ModerationDecisionForm } from "@/components/moderation-decision-form";
 import { requireAdmin } from "@/lib/admin";
 import { formatNumber } from "@/lib/utils";
 import { moderateResource, resolveReport } from "./actions";
@@ -169,24 +170,7 @@ export default async function ModerationPage({ searchParams }: { searchParams?: 
                           </a>
                         ) : null}
                       </div>
-                      <form action={moderateResource} className="mt-4 grid gap-3 border-t border-black/10 pt-4">
-                        <input type="hidden" name="resourceId" value={resource.id} />
-                        <textarea name="notes" maxLength={1200} placeholder="Notas internas de revision" className="min-h-24 rounded-klas border border-black/10 bg-white px-3 py-3 text-sm font-medium outline-none focus:border-indigo/50" />
-                        <label className="flex items-start gap-2 text-xs font-bold leading-5 text-black/62">
-                          <input type="checkbox" name="blockHash" className="mt-1 size-4 accent-carbon" />
-                          Bloquear re-subida del mismo archivo si se rechaza.
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                          <button name="decision" value="approve" className="inline-flex h-11 items-center justify-center gap-2 rounded-klas bg-mint px-4 text-sm font-black text-white">
-                            <CheckCircle2 className="size-4" />
-                            Aprobar
-                          </button>
-                          <button name="decision" value="reject" className="inline-flex h-11 items-center justify-center gap-2 rounded-klas bg-carbon px-4 text-sm font-black text-white">
-                            <XCircle className="size-4" />
-                            Rechazar
-                          </button>
-                        </div>
-                      </form>
+                      <ModerationDecisionForm resourceId={resource.id} action={moderateResource} />
                     </div>
                   </div>
                 </article>
