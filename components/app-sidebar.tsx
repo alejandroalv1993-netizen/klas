@@ -40,11 +40,13 @@ export function AppSidebar() {
         </Link>
       </nav>
       <div className="mt-10 rounded-klas border border-black/10 bg-fog p-5">
-        <p className="text-sm font-extrabold">Apoya a KLAS</p>
+        <p className="text-sm font-extrabold">Comparte con criterio</p>
         <p className="mt-2 text-sm leading-relaxed text-black/58">
-          Desactiva tu bloqueador de anuncios para mantener KLAS gratis para todos.
+          Sube documentos propios o con permiso para que la biblioteca crezca sin ruido.
         </p>
-        <p className="mt-6 text-sm font-bold text-indigo">Gracias por formar parte de la comunidad.</p>
+        <Link href="/subir" className="mt-6 inline-flex text-sm font-bold text-indigo transition-colors hover:text-carbon">
+          Subir recurso
+        </Link>
       </div>
       <button className="absolute bottom-6 left-6 flex items-center gap-3 text-sm font-bold text-black/72">
         <Moon className="size-4" />

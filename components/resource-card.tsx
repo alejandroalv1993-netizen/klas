@@ -48,7 +48,7 @@ export function ResourceCard({ resource, index = 0 }: { resource: Resource; inde
           <div className="flex items-center justify-between border-t border-black/8 pt-3 text-xs font-black text-black/66">
             <span className="inline-flex items-center gap-1.5">
               <FileText className="size-3.5" />
-              Vista previa beta
+              Recurso inicial
             </span>
             <span className="translate-x-2 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
               Abrir

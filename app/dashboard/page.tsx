@@ -6,10 +6,10 @@ import { SearchBar } from "@/components/search-bar";
 import { KlasButton } from "@/components/ui/button";
 import { categories, resources, universities } from "@/data/mock";
 
-const betaSteps = [
+const launchSteps = [
   { icon: Upload, value: "Subida", label: "PDF/DOCX desde el flujo real" },
   { icon: ShieldCheck, value: "Revision", label: "Moderacion antes de publicar" },
-  { icon: CheckCircle2, value: "Beta", label: "Recursos reales en preparacion" }
+  { icon: CheckCircle2, value: "Inicial", label: "Recursos reales en preparacion" }
 ];
 
 export default function DashboardPage() {
@@ -46,7 +46,7 @@ export default function DashboardPage() {
               <div className="relative max-w-2xl">
                 <h1 className="text-5xl font-black leading-tight sm:text-6xl">Conocimiento sin limites.</h1>
                 <p className="mt-5 max-w-xl text-lg leading-8 text-black/62">
-                  La beta se centra en recursos reales, moderacion clara y documentos limpios antes de abrir volumen.
+                  El lanzamiento se centra en recursos reales, moderacion clara y documentos limpios antes de abrir volumen.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <KlasButton href="/explorar">Explorar recursos</KlasButton>
@@ -57,8 +57,8 @@ export default function DashboardPage() {
               </div>
             </MotionDiv>
             <aside className="space-y-4">
-              <Panel title="Estado beta">
-                {betaSteps.map((step) => (
+              <Panel title="Estado del servicio">
+                {launchSteps.map((step) => (
                   <Metric key={step.label} icon={step.icon} value={step.value} label={step.label} />
                 ))}
               </Panel>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
                 <div className="flex items-start gap-3">
                   <FileText className="mt-0.5 size-5 text-indigo" />
                   <p className="text-sm font-medium leading-6 text-black/62">
-                    La beta debe mostrar solo datos respaldados por recursos reales o por el estado operativo de la plataforma.
+                    El lanzamiento debe mostrar solo datos respaldados por recursos reales o por el estado operativo de la plataforma.
                   </p>
                 </div>
               </Panel>

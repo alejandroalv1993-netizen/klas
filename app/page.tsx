@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
-import { ArrowUpRight, FileText, Heart, Search, Sparkles, Upload } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, Heart, Search, Upload } from "lucide-react";
 import { MotionDiv, MotionSection } from "@/components/motion";
 import { ResourceCard } from "@/components/resource-card";
 import { SearchBar } from "@/components/search-bar";
@@ -8,18 +8,18 @@ import { SiteHeader } from "@/components/site-header";
 import { KlasButton } from "@/components/ui/button";
 import { categories, resources } from "@/data/mock";
 
-const betaNotes = [
-  { label: "Estado", value: "Beta privada", text: "Primero recursos reales, luego volumen." },
-  { label: "Publicacion", value: "Revisión previa", text: "Cada subida pasa por moderacion antes de aparecer." },
-  { label: "Lectura", value: "Documento limpio", text: "Sin publicidad añadida dentro del archivo." },
-  { label: "Criterio", value: "Origen declarado", text: "Autoría, licencia o permiso antes de compartir." }
+const serviceNotes = [
+  { label: "Acceso", value: "Apertura gradual", text: "Primero calidad y revision; despues volumen." },
+  { label: "Publicacion", value: "Revision previa", text: "Cada subida pasa por moderacion antes de aparecer." },
+  { label: "Lectura", value: "Documento limpio", text: "Sin publicidad anadida dentro del archivo." },
+  { label: "Criterio", value: "Origen declarado", text: "Autoria, licencia o permiso antes de compartir." }
 ];
 
 const benefits: { title: string; text: string; icon: LucideIcon }[] = [
   { title: "PDFs sin anuncios", text: "El documento se mantiene limpio para estudiar sin ruido.", icon: FileText },
   { title: "Acceso abierto", text: "Recursos gratuitos, revisados antes de quedar visibles en la biblioteca.", icon: Heart },
   { title: "Busqueda con criterio", text: "Tema, universidad, asignatura y categoria trabajan juntos desde el primer filtro.", icon: Search },
-  { title: "Biblioteca en beta", text: "Empezamos con recursos seleccionados y ampliaremos la base con aportaciones reales.", icon: Sparkles }
+  { title: "Biblioteca en crecimiento", text: "La coleccion parte de recursos seleccionados y crece con aportaciones revisadas.", icon: BookOpen }
 ];
 
 const marqueeItems = [
@@ -44,6 +44,7 @@ export default function HomePage() {
           <div className="relative mx-auto grid min-h-[calc(100svh-5.75rem)] max-w-7xl items-center gap-8 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.02fr_0.98fr]">
             <MotionDiv className="relative z-10 max-w-3xl">
               <div className="mb-7 h-px w-36 bg-black/18" />
+              <p className="mb-4 text-lg font-black leading-none tracking-normal">KLAS</p>
               <h1 className="hero-title text-balance leading-[0.88]">
                 Conocimiento
                 <br />
@@ -73,7 +74,7 @@ export default function HomePage() {
                 </KlasButton>
               </div>
               <p className="mt-8 max-w-md border-l border-black/14 pl-4 text-sm font-bold leading-6 text-black/58">
-                Beta abierta pronto: estamos preparando los primeros recursos reales y revisados.
+                Estamos incorporando los primeros recursos reales y revisados.
               </p>
             </MotionDiv>
 
@@ -138,7 +139,7 @@ export default function HomePage() {
 
         <section className="bg-carbon px-5 py-14 text-white sm:px-8">
           <div className="mx-auto grid max-w-7xl border-y border-white/14 md:grid-cols-4">
-            {betaNotes.map(({ value, label, text }, index) => (
+            {serviceNotes.map(({ value, label, text }, index) => (
               <MotionDiv
                 key={label}
                 initial={{ opacity: 0, y: 14 }}
@@ -222,7 +223,7 @@ export default function HomePage() {
                 parezca navegar entre archivos abandonados.
               </p>
               <p className="mt-8 text-sm font-black text-white/86">
-                Fase beta · Recursos iniciales en revision
+                Primeros recursos en revision editorial
               </p>
             </div>
             <div className="grid grid-cols-12 gap-4">
@@ -284,8 +285,8 @@ export default function HomePage() {
         </section>
 
         <section className="relative px-5 py-24 text-center sm:px-8">
-          <Sparkles className="mx-auto size-8 text-indigo" />
-          <h2 className="editorial-heading mx-auto mt-4 max-w-3xl text-5xl leading-[1]">
+          <div className="mx-auto h-px w-24 bg-black/18" />
+          <h2 className="editorial-heading mx-auto mt-7 max-w-3xl text-5xl leading-[1]">
             El conocimiento se comparte. El futuro se construye.
           </h2>
           <div className="mt-8">

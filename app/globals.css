@@ -69,13 +69,13 @@ a {
   font-size: clamp(4rem, 9.4vw, 6rem);
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.038em;
 }
 
 .editorial-heading {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.035em;
 }
 
 .editorial-label {
