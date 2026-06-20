@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Download, Star } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import { MotionArticle } from "@/components/motion";
 import { Resource } from "@/data/mock";
-import { formatNumber } from "@/lib/utils";
 
 export function ResourceCard({ resource, index = 0 }: { resource: Resource; index?: number }) {
   return (
@@ -48,12 +47,8 @@ export function ResourceCard({ resource, index = 0 }: { resource: Resource; inde
           </div>
           <div className="flex items-center justify-between border-t border-black/8 pt-3 text-xs font-black text-black/66">
             <span className="inline-flex items-center gap-1.5">
-              <Download className="size-3.5" />
-              {formatNumber(resource.downloads)}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Star className="size-3.5 fill-carbon" />
-              {resource.rating}
+              <FileText className="size-3.5" />
+              Vista previa beta
             </span>
             <span className="translate-x-2 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
               Abrir

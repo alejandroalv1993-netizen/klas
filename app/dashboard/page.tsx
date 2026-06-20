@@ -1,11 +1,16 @@
-import { Bell, ChevronDown, Download, Star, Trophy, Upload, Users } from "lucide-react";
+import { Bell, ChevronDown, CheckCircle2, FileText, ShieldCheck, Upload } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { MotionDiv } from "@/components/motion";
 import { ResourceCard } from "@/components/resource-card";
 import { SearchBar } from "@/components/search-bar";
 import { KlasButton } from "@/components/ui/button";
 import { categories, resources, universities } from "@/data/mock";
-import { formatNumber } from "@/lib/utils";
+
+const betaSteps = [
+  { icon: Upload, value: "Subida", label: "PDF/DOCX desde el flujo real" },
+  { icon: ShieldCheck, value: "Revision", label: "Moderacion antes de publicar" },
+  { icon: CheckCircle2, value: "Beta", label: "Recursos reales en preparacion" }
+];
 
 export default function DashboardPage() {
   return (
@@ -39,10 +44,9 @@ export default function DashboardPage() {
                 K
               </div>
               <div className="relative max-w-2xl">
-                <h1 className="text-5xl font-black leading-tight sm:text-6xl">Conocimiento sin límites.</h1>
+                <h1 className="text-5xl font-black leading-tight sm:text-6xl">Conocimiento sin limites.</h1>
                 <p className="mt-5 max-w-xl text-lg leading-8 text-black/62">
-                  Apuntes gratuitos y de calidad. Sin publicidad en los documentos. Comparte,
-                  aprende y crece junto a miles de estudiantes.
+                  La beta se centra en recursos reales, moderacion clara y documentos limpios antes de abrir volumen.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <KlasButton href="/explorar">Explorar recursos</KlasButton>
@@ -53,10 +57,10 @@ export default function DashboardPage() {
               </div>
             </MotionDiv>
             <aside className="space-y-4">
-              <Panel title="Comunidad en números">
-                <Metric icon={Download} value="1.248.095" label="Descargas este mes" />
-                <Metric icon={Users} value="78.341" label="Estudiantes activos" />
-                <Metric icon={Star} value="4.8/5" label="Valoración media" />
+              <Panel title="Estado beta">
+                {betaSteps.map((step) => (
+                  <Metric key={step.label} icon={step.icon} value={step.value} label={step.label} />
+                ))}
               </Panel>
             </aside>
           </section>
@@ -68,7 +72,7 @@ export default function DashboardPage() {
                 <div key={category.name} className="rounded-klas border border-black/8 bg-white p-5 shadow-sm">
                   <Icon className={`size-6 ${category.color}`} />
                   <p className="mt-3 font-black">{category.name}</p>
-                  <p className="text-sm text-black/55">{formatNumber(category.count)} recursos</p>
+                  <p className="text-sm text-black/55">Coleccion inicial en preparacion</p>
                 </div>
               );
             })}
@@ -94,7 +98,7 @@ export default function DashboardPage() {
                   {universities.slice(0, 6).map((university) => (
                     <div key={university} className="rounded-klas border border-black/8 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-soft">
                       <p className="font-black leading-snug">{university}</p>
-                      <p className="mt-2 text-sm text-black/55">{Math.floor(Math.random() * 24000 + 5000).toLocaleString("es-ES")} recursos</p>
+                      <p className="mt-2 text-sm text-black/55">Filtro disponible para recursos revisados</p>
                     </div>
                   ))}
                 </div>
@@ -102,34 +106,26 @@ export default function DashboardPage() {
             </div>
 
             <aside className="space-y-4">
-              <Panel title="Tendencias">
-                {resources.slice(4, 6).map((resource, index) => (
-                  <div key={resource.id} className="flex items-center gap-3">
-                    <span className="text-sm font-black text-black/38">{index + 1}</span>
-                    <div className={`size-14 rounded-klas cover-${resource.coverTone}`} />
-                    <div>
-                      <p className="text-sm font-black">{resource.title}</p>
-                      <p className="text-xs text-black/50">{formatNumber(resource.downloads)} descargas</p>
-                    </div>
+              <Panel title="Tareas de lanzamiento">
+                {[
+                  "Subir recursos reales",
+                  "Aprobarlos desde owner",
+                  "Revisar rutas publicas",
+                  "Pulir microinteracciones"
+                ].map((item, index) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <span className="grid size-7 place-items-center rounded-full bg-black/5 text-xs font-black text-black/48">{index + 1}</span>
+                    <p className="text-sm font-black">{item}</p>
                   </div>
                 ))}
               </Panel>
-              <Panel title="Mejores colaboradores">
-                {["María López", "Carlos Rodríguez", "Lucía Fernández"].map((name, index) => (
-                  <div key={name} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-black text-black/38">{index + 1}</span>
-                      <div className="grid size-9 place-items-center rounded-full bg-carbon text-xs font-black text-white">
-                        {name.split(" ").map((part) => part[0]).join("")}
-                      </div>
-                      <div>
-                        <p className="text-sm font-black">{name}</p>
-                        <p className="text-xs text-black/50">{246 - index * 57} recursos</p>
-                      </div>
-                    </div>
-                    <Trophy className="size-4 text-energy" />
-                  </div>
-                ))}
+              <Panel title="Publicacion">
+                <div className="flex items-start gap-3">
+                  <FileText className="mt-0.5 size-5 text-indigo" />
+                  <p className="text-sm font-medium leading-6 text-black/62">
+                    La beta debe mostrar solo datos respaldados por recursos reales o por el estado operativo de la plataforma.
+                  </p>
+                </div>
               </Panel>
             </aside>
           </section>
@@ -148,7 +144,7 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
-function Metric({ icon: Icon, value, label }: { icon: typeof Download; value: string; label: string }) {
+function Metric({ icon: Icon, value, label }: { icon: typeof Upload; value: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
       <div className="grid size-11 place-items-center rounded-klas bg-indigo/10 text-indigo">

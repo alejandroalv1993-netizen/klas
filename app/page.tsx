@@ -1,26 +1,25 @@
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
-import { ArrowUpRight, Download, FileText, Heart, Search, Sparkles, Star, Upload, Users } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, FileText, Heart, Search, Sparkles, Upload } from "lucide-react";
 import { MotionDiv, MotionSection } from "@/components/motion";
 import { ResourceCard } from "@/components/resource-card";
 import { SearchBar } from "@/components/search-bar";
 import { SiteHeader } from "@/components/site-header";
 import { KlasButton } from "@/components/ui/button";
 import { categories, resources } from "@/data/mock";
-import { formatNumber } from "@/lib/utils";
 
 const stats: { value: string; label: string; icon: LucideIcon }[] = [
-  { value: "75.000+", label: "Estudiantes activos", icon: Users },
-  { value: "250.000+", label: "Recursos compartidos", icon: FileText },
-  { value: "1.2M", label: "Descargas este mes", icon: Download },
-  { value: "4.8/5", label: "Valoracion media", icon: Star }
+  { value: "Beta", label: "Acceso inicial controlado", icon: Sparkles },
+  { value: "PDF/DOCX", label: "Formatos admitidos", icon: FileText },
+  { value: "Revision", label: "Moderacion antes de publicar", icon: CheckCircle2 },
+  { value: "Sin ads", label: "Sin publicidad anadida al documento", icon: Heart }
 ];
 
 const benefits: { title: string; text: string; icon: LucideIcon }[] = [
   { title: "PDFs sin anuncios", text: "El documento se mantiene limpio para estudiar sin ruido.", icon: FileText },
-  { title: "Acceso abierto", text: "Recursos gratis, compartidos por estudiantes y revisados por senales de comunidad.", icon: Heart },
+  { title: "Acceso abierto", text: "Recursos gratuitos, revisados antes de quedar visibles en la biblioteca.", icon: Heart },
   { title: "Busqueda con criterio", text: "Tema, universidad, asignatura y categoria trabajan juntos desde el primer filtro.", icon: Search },
-  { title: "Reputacion util", text: "Valoraciones, descargas y favoritos ayudan a elegir rapido.", icon: Star }
+  { title: "Biblioteca en beta", text: "Empezamos con recursos seleccionados y ampliaremos la base con aportaciones reales.", icon: Sparkles }
 ];
 
 const marqueeItems = [
@@ -43,14 +42,12 @@ export default function HomePage() {
           <div className="absolute inset-0 grid-paper" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
           <div className="relative mx-auto grid min-h-[calc(100svh-5.75rem)] max-w-7xl items-center gap-8 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.02fr_0.98fr]">
-            <MotionDiv
-              className="relative z-10 max-w-3xl"
-            >
+            <MotionDiv className="relative z-10 max-w-3xl">
               <div className="mb-7 h-px w-36 bg-black/18" />
               <h1 className="hero-title text-balance leading-[0.88]">
                 Conocimiento
                 <br />
-                sin l&iacute;mites.
+                sin limites.
               </h1>
               <svg
                 className="mt-5 h-8 w-[min(31rem,80vw)] overflow-visible"
@@ -75,27 +72,12 @@ export default function HomePage() {
                   Subir recurso
                 </KlasButton>
               </div>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <div className="flex -space-x-3">
-                  {["LF", "MR", "AC", "NP", "IV"].map((avatar) => (
-                    <div
-                      key={avatar}
-                      className="grid size-10 place-items-center rounded-full border-2 border-white bg-carbon text-[10px] font-black text-white transition-transform duration-500 hover:-translate-y-1"
-                    >
-                      {avatar}
-                    </div>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  <div className="font-black text-energy">5 estrellas · 4.8/5</div>
-                  <div className="font-medium text-black/58">De mas de 70.000 estudiantes</div>
-                </div>
-              </div>
+              <p className="mt-8 max-w-md border-l border-black/14 pl-4 text-sm font-bold leading-6 text-black/58">
+                Beta abierta pronto: estamos preparando los primeros recursos reales y revisados.
+              </p>
             </MotionDiv>
 
-            <MotionDiv
-              className="relative flex min-h-[440px] items-center justify-center lg:justify-end"
-            >
+            <MotionDiv className="relative flex min-h-[440px] items-center justify-center lg:justify-end">
               <div className="hero-image-frame w-[min(31rem,88vw)]">
                 <div className="hero-study-shape relative aspect-[1.06] overflow-hidden bg-fog">
                   <Image
@@ -127,7 +109,7 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
               <h2 className="editorial-heading max-w-md text-4xl leading-[1.02]">
-                Una plataforma para estudiar sin fricci&oacute;n.
+                Una plataforma para estudiar sin friccion.
               </h2>
               <p className="mt-5 max-w-sm text-base font-medium leading-7 text-black/62">
                 La interfaz acompana el gesto principal: encontrar un recurso bueno y descargarlo sin perder tiempo.
@@ -199,7 +181,7 @@ export default function HomePage() {
                   <div key={category.name} className="group rounded-klas border border-black/12 bg-white p-5 transition-colors duration-500 hover:bg-carbon hover:text-white">
                     <Icon className={`size-7 ${category.color} transition-transform duration-500 group-hover:-translate-y-1`} />
                     <p className="mt-5 font-black">{category.name}</p>
-                    <p className="text-sm font-medium opacity-62">{formatNumber(category.count)} recursos</p>
+                    <p className="text-sm font-medium opacity-62">Coleccion inicial en preparacion</p>
                   </div>
                 );
               })}
@@ -239,7 +221,7 @@ export default function HomePage() {
                 parezca navegar entre archivos abandonados.
               </p>
               <p className="mt-8 text-sm font-black text-white/86">
-                Lucia Fernandez · Estudiante de Derecho
+                Fase beta · Recursos iniciales en revision
               </p>
             </div>
             <div className="grid grid-cols-12 gap-4">
