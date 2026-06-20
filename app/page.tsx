@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
-import { ArrowUpRight, CheckCircle2, FileText, Heart, Search, Sparkles, Upload } from "lucide-react";
+import { ArrowUpRight, FileText, Heart, Search, Sparkles, Upload } from "lucide-react";
 import { MotionDiv, MotionSection } from "@/components/motion";
 import { ResourceCard } from "@/components/resource-card";
 import { SearchBar } from "@/components/search-bar";
@@ -8,11 +8,11 @@ import { SiteHeader } from "@/components/site-header";
 import { KlasButton } from "@/components/ui/button";
 import { categories, resources } from "@/data/mock";
 
-const stats: { value: string; label: string; icon: LucideIcon }[] = [
-  { value: "Beta", label: "Acceso inicial controlado", icon: Sparkles },
-  { value: "PDF/DOCX", label: "Formatos admitidos", icon: FileText },
-  { value: "Revision", label: "Moderacion antes de publicar", icon: CheckCircle2 },
-  { value: "Sin ads", label: "Sin publicidad anadida al documento", icon: Heart }
+const betaNotes = [
+  { label: "Estado", value: "Beta privada", text: "Primero recursos reales, luego volumen." },
+  { label: "Publicacion", value: "Revisión previa", text: "Cada subida pasa por moderacion antes de aparecer." },
+  { label: "Lectura", value: "Documento limpio", text: "Sin publicidad añadida dentro del archivo." },
+  { label: "Criterio", value: "Origen declarado", text: "Autoría, licencia o permiso antes de compartir." }
 ];
 
 const benefits: { title: string; text: string; icon: LucideIcon }[] = [
@@ -136,20 +136,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="bg-carbon px-5 py-10 text-white sm:px-8">
-          <div className="mx-auto grid max-w-7xl gap-7 md:grid-cols-4">
-            {stats.map(({ value, label, icon: Icon }, index) => (
+        <section className="bg-carbon px-5 py-14 text-white sm:px-8">
+          <div className="mx-auto grid max-w-7xl border-y border-white/14 md:grid-cols-4">
+            {betaNotes.map(({ value, label, text }, index) => (
               <MotionDiv
                 key={label}
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.045 }}
-                className="border-t border-white/18 pt-5"
+                transition={{ duration: 0.45, delay: index * 0.035 }}
+                className="group border-white/14 py-7 md:border-l md:px-7 first:md:border-l-0"
               >
-                <Icon className="mb-6 size-6 opacity-80" />
-                <div className="editorial-heading text-5xl">{value}</div>
-                <div className="mt-2 text-sm font-bold text-white/62">{label}</div>
+                <p className="text-xs font-black text-white/42">{label}</p>
+                <div className="mt-5 h-px w-10 bg-white/24 transition-all duration-500 group-hover:w-20 group-hover:bg-white/55" />
+                <h2 className="mt-5 text-2xl font-black tracking-[-0.02em] text-white sm:text-3xl">{value}</h2>
+                <p className="mt-3 max-w-56 text-sm font-medium leading-6 text-white/58">{text}</p>
               </MotionDiv>
             ))}
           </div>
