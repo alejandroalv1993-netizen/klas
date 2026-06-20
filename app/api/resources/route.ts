@@ -11,6 +11,20 @@ function field(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
 }
 
+function supabaseErrorPayload(prefix: string, error: {
+  code?: string;
+  message?: string;
+  details?: string;
+  hint?: string;
+}) {
+  return {
+    error: `${prefix}: ${error.message ?? "Error desconocido"}`,
+    code: error.code,
+    details: error.details,
+    hint: error.hint
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -61,7 +75,10 @@ export async function POST(request: Request) {
         upsert: false
       });
 
-    if (uploadError) return NextResponse.json({ error: "No se pudo guardar el archivo." }, { status: 500 });
+    if (uploadError) {
+      console.error("Resource upload failed", uploadError);
+      return NextResponse.json(supabaseErrorPayload("No se pudo guardar el archivo", uploadError), { status: 500 });
+    }
 
     const { data: resource, error: insertError } = await supabase
       .from("resources")
@@ -92,8 +109,9 @@ export async function POST(request: Request) {
       .single();
 
     if (insertError) {
+      console.error("Resource insert failed", insertError);
       await supabase.storage.from("resources").remove([storagePath]);
-      return NextResponse.json({ error: "No se pudo enviar el recurso a revision. Aplica la migracion de moderacion en Supabase si aun no lo has hecho." }, { status: 500 });
+      return NextResponse.json(supabaseErrorPayload("No se pudo enviar el recurso a revision", insertError), { status: 500 });
     }
 
     return NextResponse.json({ resource, moderation: { flags: moderation.flags } }, { status: 201 });

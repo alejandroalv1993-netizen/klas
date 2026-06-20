@@ -165,7 +165,7 @@ as '
   left join auth.users u on u.id = r.author_id
   left join public.resource_reports rr on rr.resource_id = r.id and rr.status in (''open'', ''reviewing'')
   where public.is_moderator()
-    and r.status in (''pending_review'', ''rejected'')
+    and r.status = ''pending_review''
   group by r.id, u.email
   order by r.created_at asc;
 ';
@@ -220,6 +220,7 @@ set search_path = public
 as '
 declare
   current_hash text;
+  resource_exists boolean;
 begin
   if not public.is_moderator() then
     raise exception ''Not authorized'';
@@ -229,11 +230,11 @@ begin
     raise exception ''Invalid moderation decision'';
   end if;
 
-  select content_hash into current_hash
+  select true, content_hash into resource_exists, current_hash
   from public.resources
   where id = target_resource_id;
 
-  if current_hash is null then
+  if resource_exists is not true then
     raise exception ''Resource not found'';
   end if;
 
